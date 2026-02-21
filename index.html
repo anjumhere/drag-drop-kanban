@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>kanban repeat</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="border">
+        <span class="bracket">[</span>
+        <h1>KANBAN</h1>
+        <span class="bracket">]</span>
+      </div>
+      <div class="search-wrapper">
+        <span class="search-icon">⌕</span>
+        <input
+          type="text"
+          placeholder="Search Tasks..."
+          id="search"
+          class="search"
+        />
+      </div>
+      <nav>
+        <button class="toggle-modal" id="toggle-modal">+ New Task</button>
+      </nav>
+    </header>
+    <main>
+      <section class="board">
+        <section class="column" id="todo">
+          <div class="info">
+            <h2><span class="dot dot1"></span>TO DO</h2>
+            <p>0</p>
+          </div>
+          <div class="column-body" id="column-body"></div>
+        </section>
+        <section class="column" id="progress">
+          <div class="info">
+            <h2><span class="dot dot2"></span>IN PROGRESS</h2>
+            <p>0</p>
+          </div>
+        </section>
+        <section class="column" id="done">
+          <div class="info">
+            <h2><span class="dot dot3"></span>DONE</h2>
+            <p>0</p>
+          </div>
+        </section>
+      </section>
+      <section class="modal">
+        <div class="bg"></div>
+        <div class="center">
+          <div class="modal-header">
+            <h2>New Task</h2>
+            <h2 class="close-modal" id="close-modal">X</h2>
+          </div>
+          <div class="modal-body">
+            <input type="text" placeholder="Task title..." id="modal-input" />
+            <textarea
+              id="modal-details"
+              placeholder="Task Description"
+            ></textarea>
+            <button class="add-task btn" id="add-task">Add Task</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="index.js"></script>
+  </body>
+</html>

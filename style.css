@@ -1,0 +1,395 @@
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #080c14;
+  --surface: #0d1420;
+  --surface-2: #111827;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.22);
+  --text: #ffffff;
+  --text-muted: #8a95a8;
+  --text-dim: #4a5568;
+  --accent-todo: #5b8fff;
+  --accent-progress: #ffb340;
+  --accent-done: #3ddc84;
+  --danger: #ff5470;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --font-family: "Montserrat", sans-serif;
+  --font-mono: "Menlo", "Consolas", monospace;
+  --font-family2: "Chakra Petch", sans-serif;
+
+  /* paddings */
+  --padding-basic: 2px;
+  --padding-xs: 6px;
+  --padding-s: 10px;
+  --padding-m: 15px;
+  --padding-l: 20px;
+  --padding-xl: 25px;
+  --padding-xxl: 30px;
+  --padding-xxxl: 40px;
+}
+
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--bg);
+  color: white;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  height: 70px;
+  border-bottom: 1px solid rgb(39, 39, 39);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-s) var(--padding-xxxl);
+}
+
+header h1 {
+  font-size: 15px;
+  letter-spacing: 7px;
+  font-weight: 800;
+}
+
+header .border {
+  display: flex;
+  gap: var(--padding-xs);
+  align-items: center;
+  height: 100%;
+  font-weight: 400;
+  font-family: var(--font-family2);
+}
+
+header .border .bracket {
+  font-size: 20px;
+  color: rgb(126, 167, 230);
+}
+
+header nav button {
+  padding: var(--padding-s) var(--padding-xl);
+  border-radius: var(--padding-s);
+  border: none;
+  outline: none;
+  background-color: var(--accent-todo);
+  color: white;
+  transition: 0.3s ease-in-out;
+}
+
+header nav button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 10px #5b8fff,
+    0 0 30px rgba(91, 143, 255, 0.3);
+  cursor: pointer;
+}
+header .search-wrapper input {
+  border: none;
+  outline: none;
+  background-color: var(--surface-2);
+  padding: var(--padding-xs) var(--padding-s);
+  width: 100%;
+  color: white;
+}
+
+header .search-wrapper {
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  border-radius: var(--padding-s);
+  padding: var(--padding-basic) var(--padding-m);
+  flex: 0 1 450px;
+  background-color: var(--surface-2);
+  gap: var(--padding-xs);
+}
+
+header .search-wrapper .search-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+}
+
+.board .column {
+  border: 1px solid rgb(39, 39, 39);
+  flex-grow: 1;
+  margin-top: var(--padding-s);
+  border-radius: var(--padding-l);
+  background-color: var(--surface);
+  min-height: 300px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(39, 39, 39);
+  padding: var(--padding-m) var(--padding-s);
+  align-items: center;
+  font-family: var(--font-family2);
+}
+.info p {
+  font-family: "Fira Code";
+}
+
+.board {
+  display: flex;
+  height: 100%;
+  justify-content: space-evenly;
+  padding: var(--padding-s) var(--padding-xl);
+  gap: var(--padding-m);
+  align-items: flex-start;
+}
+
+.column .info p {
+  border: 1px solid rgb(56, 56, 56);
+  padding: 2px var(--padding-s);
+  border-radius: var(--padding-xxl);
+  font-size: 13px;
+  color: rgb(160, 149, 149);
+}
+
+.info h2 {
+  line-height: 1.5;
+  font-size: 14px;
+  font-family: var(--font-family);
+  color: rgb(196, 196, 196);
+  margin-left: var(--padding-s);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dot {
+  height: 5px;
+  width: 5px;
+  background-color: var(--accent-todo);
+  border-radius: 30px;
+  padding: var(--padding-xs);
+  margin: 0 var(--padding-s) 0 0;
+}
+
+.dot2 {
+  background-color: var(--accent-progress);
+}
+
+.dot3 {
+  background-color: var(--accent-done);
+}
+
+.column-body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding-s);
+}
+
+.task {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgb(39, 39, 39);
+  padding: var(--padding-m);
+  border-radius: var(--padding-s);
+  background-color: var(--surface-2);
+  transition: 0.2s ease-in-out;
+  cursor: grabbing;
+}
+
+.task:hover {
+  border: 1px solid rgb(78, 78, 78);
+  -webkit-box-shadow:
+    0px 10px 13px -7px #000000,
+    1px 5px 19px 3px rgba(0, 0, 0, 0.26);
+  box-shadow:
+    0px 10px 13px -7px #000000,
+    1px 5px 19px 3px rgba(0, 0, 0, 0.26);
+}
+.task .task-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--padding-s);
+}
+
+.task .task-actions .btn {
+  padding: var(--padding-xs) var(--padding-l);
+  border: none;
+  outline: none;
+  background-color: rgba(255, 69, 96, 0.08);
+  font-size: 12px;
+  border-radius: 5px;
+  font-weight: 200;
+}
+.add-todo {
+  padding: var(--padding-xs) var(--padding-xxxl);
+  border: none;
+  outline: none;
+  background-color: var(--accent-todo);
+  font-size: 12px;
+  border-radius: 5px;
+  font-weight: 200;
+  color: white;
+}
+
+.task .task-actions .delete-button:hover {
+  border-color: var(--danger);
+  cursor: pointer;
+  transition: 0.3s ease;
+  transform: translateY(-2px);
+}
+
+.task .task-actions .edit-button:hover {
+  border-color: #7e7ee1;
+  cursor: pointer;
+  transition: 0.3s ease;
+  transform: translateY(-2px);
+}
+
+.task .task-actions .edit-button {
+  background-color: #191946;
+  color: #7e7ee1;
+  border: 1px solid #36365a;
+}
+
+.task .task-actions .delete-button {
+  border: 0.5px solid #4d3a3a;
+  color: var(--danger);
+}
+
+.task h2 {
+  font-size: 18px;
+  padding: var(--padding-basic);
+}
+.task p {
+  font-size: 14px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.modal .bg {
+  position: absolute;
+  inset: 0;
+  /* background: var(--bg); */
+  backdrop-filter: blur(5px);
+}
+
+.modal .center {
+  position: relative;
+  /* inset: 0; */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--padding-s);
+  padding: var(--padding-l);
+  width: min(420px, 90%);
+  gap: var(--padding-xxl);
+  background-color: var(--surface-2);
+  -webkit-box-shadow: 1px 5px 25px 4px rgba(231, 231, 231, 0.43);
+  box-shadow: 1px 5px 25px 4px rgba(231, 231, 231, 0.43);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  /* border-bottom: 1px solid white; */
+  padding: var(--padding-s);
+}
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--padding-xl);
+}
+
+.modal-body input {
+  border: 1px solid var(--border);
+  outline: none;
+  background-color: var(--surface);
+  width: 100%;
+  padding: var(--padding-s);
+  border-radius: 8px;
+  color: white;
+}
+.modal-body textarea {
+  border: 1px solid var(--border);
+  outline: none;
+  background-color: var(--surface);
+  padding: var(--padding-l);
+  width: 100%;
+  border-radius: var(--padding-s);
+  color: white;
+  text-align: left;
+}
+
+.modal-body .add-task {
+  padding: var(--padding-m);
+  border: none;
+  outline: none;
+  background-color: var(--accent-todo);
+  color: white;
+  font-size: 15px;
+  border-radius: 5px;
+  font-weight: 500;
+  width: 100%;
+  border-radius: var(--padding-s);
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.modal-body .add-task:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 10px #5b8fff,
+    0 0 30px rgba(91, 143, 255, 0.3);
+}
+
+.modal-header h2 {
+  font-size: 20px;
+}
+
+.modal-header .close-modal {
+  border: 1px solid var(--border);
+  padding: var(--padding-basic) var(--padding-xs);
+  border-radius: var(--padding-xs);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  color: rgb(153, 153, 153);
+  background-color: var(--surface);
+  cursor: pointer;
+  transition: 0.1s ease-in;
+}
+
+.modal-header .close-modal:hover {
+  background-color: rgba(155, 48, 48, 0.329);
+  border: 1px solid var(--danger);
+}
+
+.modal.hide {
+  display: flex;
+}
+
+.column.hover-over {
+  border: 2px dashed var(--accent-todo);
+}
