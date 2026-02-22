@@ -61,6 +61,7 @@ function trackDragElement(item) {
     if (dragItem) {
       let columnBody = item.querySelector(".column-body");
       columnBody.appendChild(dragItem);
+      taskCounter();
     }
   });
 }
@@ -94,6 +95,7 @@ function dynamicTask() {
   //deleting task
   deleteBtn.addEventListener("click", () => {
     task.remove();
+    taskCounter();
   });
 
   taskContainer.appendChild(task);
@@ -107,6 +109,7 @@ function dynamicTask() {
   let data = modalData();
   taskHeading.textContent = data.title;
   paragraph.textContent = data.description;
+  taskCounter();
 }
 
 //adding task
@@ -114,3 +117,14 @@ addTaskButton.addEventListener("click", () => {
   dynamicTask();
   modal.classList.remove("hide");
 });
+
+// Task Counter
+function taskCounter() {
+  let todoCount = todo.querySelectorAll(".task").length;
+  let progressCount = progress.querySelectorAll(".task").length;
+  let doneCount = done.querySelectorAll(".task").length;
+
+  todo.querySelector(".count").textContent = todoCount;
+  progress.querySelector(".count").textContent = progressCount;
+  done.querySelector(".count").textContent = doneCount;
+}

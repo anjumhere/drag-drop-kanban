@@ -402,5 +402,6 @@ main {
 
 /* ── DRAG HOVER ── */
 .column.hover-over {
-  border: 2px dashed var(--accent-todo);
+  border: 2px solid var(--accent-todo);
+  box-shadow: -1px 1px 35px -18px var(--accent-todo);
 }
