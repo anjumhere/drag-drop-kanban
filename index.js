@@ -159,7 +159,7 @@ function taskCounter() {
   let progressCount = progress.querySelectorAll(".task").length;
   let doneCount = done.querySelectorAll(".task").length;
   if (doneCount > 0) {
-    let todo = document.querySelector(".task");
+    let todo = done.querySelector(".task");
     todo.classList.add("green");
     setTimeout(() => {
       todo.classList.remove("green");
