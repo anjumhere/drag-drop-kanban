@@ -13,6 +13,7 @@
   --surface-2: #111827;
   --border: rgba(255, 255, 255, 0.1);
   --border-hover: rgba(255, 255, 255, 0.22);
+  --border-color: #20b2aa;
   --text: #ffffff;
   --text-muted: #8a95a8;
   --text-dim: #4a5568;
@@ -152,6 +153,9 @@ main {
   min-height: 300px;
   display: flex;
   flex-direction: column;
+  transition:
+    border-color 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out;
 }
 
 .info {
@@ -210,6 +214,10 @@ main {
   gap: var(--padding-m);
   align-content: flex-start; /* ← tasks stack from top, don't spread out */
   align-items: stretch;
+
+  transition:
+    border-color 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out;
 }
 
 /* ✅ FIX: task has no fixed width, respects column-body padding naturally */
@@ -223,6 +231,10 @@ main {
   transition: 0.2s ease-in-out;
   cursor: grab; /* ✅ FIX: grab not grabbing */
   gap: var(--padding-xs);
+  transition:
+    0.2s ease-in-out,
+    border-color 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out; /* ✅ added here */
 }
 
 /* ✅ FIX: dragging class for JS to add when drag starts */
@@ -402,6 +414,20 @@ main {
 
 /* ── DRAG HOVER ── */
 .column.hover-over {
-  border: 2px solid var(--accent-todo);
+  border-color: var(--accent-todo);
   box-shadow: -1px 1px 35px -18px var(--accent-todo);
+  transition:
+    border-color 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out;
+}
+
+.task.highlight {
+  border-color: var(--border-color);
+  box-shadow: -1px 1px 35px -18px var(--border-color);
+}
+
+.task.green {
+  border-color: var(--accent-done);
+  box-shadow: -1px 1px 35px -18px var(--accent-done);
+  transition: 0.4s ease-in-out;
 }
