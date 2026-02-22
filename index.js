@@ -2,7 +2,7 @@
 const search = document.getElementById("search");
 const modalInput = document.getElementById("modal-input");
 const modalDetails = document.getElementById("modal-details");
-
+console.log(search);
 //buttons
 const modalBtn = document.getElementById("toggle-modal");
 const addTaskButton = document.getElementById("add-task");
@@ -36,8 +36,39 @@ function modalData() {
   };
 }
 
-//handling modal hovering effect
+//search feature
+let searchTimeout;
 
+search.addEventListener("input", () => {
+  let searchValue = search.value.toLowerCase();
+
+  // remove highlight from all tasks first
+  document.querySelectorAll(".task").forEach((task) => {
+    task.classList.remove("highlight");
+  });
+
+  clearTimeout(searchTimeout); // reset timer on every keystroke
+
+  searchTimeout = setTimeout(() => {
+    let allTasks = document.querySelectorAll(".task");
+    allTasks.forEach((task) => {
+      let taskTitle = task.querySelector("h2").textContent.toLowerCase();
+      let taskDescription = task.querySelector("p").textContent.toLowerCase();
+
+      if (
+        taskTitle.includes(searchValue) ||
+        taskDescription.includes(searchValue)
+      ) {
+        task.classList.add("highlight");
+        setTimeout(() => {
+          task.classList.remove("highlight");
+        }, 2000);
+      }
+    });
+  }, 500);
+});
+
+//handling modal hovering effect
 let dragItem = null;
 
 // set dragItem on the task when dragging starts
@@ -59,8 +90,12 @@ function trackDragElement(item) {
   item.addEventListener("drop", (e) => {
     e.preventDefault();
     if (dragItem) {
+      setTimeout(() => {
+        item.classList.remove("hover-over");
+      }, 1000);
       let columnBody = item.querySelector(".column-body");
       columnBody.appendChild(dragItem);
+
       taskCounter();
     }
   });
@@ -123,7 +158,15 @@ function taskCounter() {
   let todoCount = todo.querySelectorAll(".task").length;
   let progressCount = progress.querySelectorAll(".task").length;
   let doneCount = done.querySelectorAll(".task").length;
-
+  if (doneCount > 0) {
+    let todo = document.querySelector(".task");
+    todo.classList.add("green");
+    setTimeout(() => {
+      todo.classList.remove("green");
+    }, 1000);
+  } else {
+    todo.classList.remove("green");
+  }
   todo.querySelector(".count").textContent = todoCount;
   progress.querySelector(".count").textContent = progressCount;
   done.querySelector(".count").textContent = doneCount;
