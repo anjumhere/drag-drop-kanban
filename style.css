@@ -90,6 +90,7 @@ header nav button {
   background-color: var(--accent-todo);
   color: white;
   transition: 0.3s ease-in-out;
+  cursor: pointer;
 }
 
 header nav button:hover {
@@ -97,8 +98,8 @@ header nav button:hover {
   box-shadow:
     0 0 10px #5b8fff,
     0 0 30px rgba(91, 143, 255, 0.3);
-  cursor: pointer;
 }
+
 header .search-wrapper input {
   border: none;
   outline: none;
@@ -125,17 +126,32 @@ header .search-wrapper .search-icon {
 }
 
 main {
-  height: 100%;
+  flex: 1; /* fills remaining height after header */
   width: 100%;
+  overflow: hidden;
 }
 
+/* ✅ FIX: board uses flex with equal columns */
+.board {
+  display: flex;
+  height: 100%;
+  padding: var(--padding-s) var(--padding-xl);
+  gap: var(--padding-m);
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+/* ✅ FIX: all columns are equal width always */
 .board .column {
   border: 1px solid rgb(39, 39, 39);
-  flex-grow: 1;
+  flex: 1 1 0; /* equal width, can grow and shrink, starts from 0 */
+  min-width: 0; /* prevents overflow */
   margin-top: var(--padding-s);
   border-radius: var(--padding-l);
   background-color: var(--surface);
   min-height: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 .info {
@@ -146,17 +162,9 @@ main {
   align-items: center;
   font-family: var(--font-family2);
 }
+
 .info p {
   font-family: "Fira Code";
-}
-
-.board {
-  display: flex;
-  height: 100%;
-  justify-content: space-evenly;
-  padding: var(--padding-s) var(--padding-xl);
-  gap: var(--padding-m);
-  align-items: flex-start;
 }
 
 .column .info p {
@@ -175,7 +183,6 @@ main {
   margin-left: var(--padding-s);
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .dot {
@@ -190,17 +197,22 @@ main {
 .dot2 {
   background-color: var(--accent-progress);
 }
-
 .dot3 {
   background-color: var(--accent-done);
 }
 
+/* ✅ FIX: column-body fills remaining column height */
 .column-body {
+  flex: 1;
   display: flex;
   flex-direction: column;
   padding: var(--padding-s);
+  gap: var(--padding-m);
+  align-content: flex-start; /* ← tasks stack from top, don't spread out */
+  align-items: stretch;
 }
 
+/* ✅ FIX: task has no fixed width, respects column-body padding naturally */
 .task {
   display: flex;
   flex-direction: column;
@@ -209,56 +221,50 @@ main {
   border-radius: var(--padding-s);
   background-color: var(--surface-2);
   transition: 0.2s ease-in-out;
+  cursor: grab; /* ✅ FIX: grab not grabbing */
+  gap: var(--padding-xs);
+}
+
+/* ✅ FIX: dragging class for JS to add when drag starts */
+.task.dragging {
+  opacity: 0.4;
   cursor: grabbing;
 }
 
 .task:hover {
   border: 1px solid rgb(78, 78, 78);
-  -webkit-box-shadow:
-    0px 10px 13px -7px #000000,
-    1px 5px 19px 3px rgba(0, 0, 0, 0.26);
   box-shadow:
     0px 10px 13px -7px #000000,
     1px 5px 19px 3px rgba(0, 0, 0, 0.26);
 }
+
+.task h2 {
+  font-size: 16px;
+  padding: var(--padding-basic);
+}
+
+.task p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 .task .task-actions {
   display: flex;
   justify-content: flex-end;
   gap: var(--padding-s);
+  margin-top: var(--padding-xs);
 }
 
+/* ✅ FIX: transition on base, not on hover */
 .task .task-actions .btn {
   padding: var(--padding-xs) var(--padding-l);
   border: none;
   outline: none;
-  background-color: rgba(255, 69, 96, 0.08);
   font-size: 12px;
   border-radius: 5px;
   font-weight: 200;
-}
-.add-todo {
-  padding: var(--padding-xs) var(--padding-xxxl);
-  border: none;
-  outline: none;
-  background-color: var(--accent-todo);
-  font-size: 12px;
-  border-radius: 5px;
-  font-weight: 200;
-  color: white;
-}
-
-.task .task-actions .delete-button:hover {
-  border-color: var(--danger);
+  transition: 0.2s ease-in-out;
   cursor: pointer;
-  transition: 0.3s ease;
-  transform: translateY(-2px);
-}
-
-.task .task-actions .edit-button:hover {
-  border-color: #7e7ee1;
-  cursor: pointer;
-  transition: 0.3s ease;
-  transform: translateY(-2px);
 }
 
 .task .task-actions .edit-button {
@@ -267,19 +273,23 @@ main {
   border: 1px solid #36365a;
 }
 
+.task .task-actions .edit-button:hover {
+  border-color: #7e7ee1;
+  transform: translateY(-2px);
+}
+
 .task .task-actions .delete-button {
+  background-color: rgba(255, 69, 96, 0.08);
   border: 0.5px solid #4d3a3a;
   color: var(--danger);
 }
 
-.task h2 {
-  font-size: 18px;
-  padding: var(--padding-basic);
-}
-.task p {
-  font-size: 14px;
+.task .task-actions .delete-button:hover {
+  border-color: var(--danger);
+  transform: translateY(-2px);
 }
 
+/* ── MODAL ── */
 .modal {
   display: none;
   position: fixed;
@@ -288,16 +298,20 @@ main {
   align-items: center;
   z-index: 100;
 }
+
+.modal.hide {
+  display: flex;
+}
+
 .modal .bg {
   position: absolute;
   inset: 0;
-  /* background: var(--bg); */
   backdrop-filter: blur(5px);
 }
 
 .modal .center {
   position: relative;
-  /* inset: 0; */
+  z-index: 1;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border);
@@ -306,62 +320,13 @@ main {
   width: min(420px, 90%);
   gap: var(--padding-xxl);
   background-color: var(--surface-2);
-  -webkit-box-shadow: 1px 5px 25px 4px rgba(231, 231, 231, 0.43);
   box-shadow: 1px 5px 25px 4px rgba(231, 231, 231, 0.43);
 }
+
 .modal-header {
   display: flex;
   justify-content: space-between;
-  /* border-bottom: 1px solid white; */
   padding: var(--padding-s);
-}
-.modal-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--padding-xl);
-}
-
-.modal-body input {
-  border: 1px solid var(--border);
-  outline: none;
-  background-color: var(--surface);
-  width: 100%;
-  padding: var(--padding-s);
-  border-radius: 8px;
-  color: white;
-}
-.modal-body textarea {
-  border: 1px solid var(--border);
-  outline: none;
-  background-color: var(--surface);
-  padding: var(--padding-l);
-  width: 100%;
-  border-radius: var(--padding-s);
-  color: white;
-  text-align: left;
-}
-
-.modal-body .add-task {
-  padding: var(--padding-m);
-  border: none;
-  outline: none;
-  background-color: var(--accent-todo);
-  color: white;
-  font-size: 15px;
-  border-radius: 5px;
-  font-weight: 500;
-  width: 100%;
-  border-radius: var(--padding-s);
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
-
-.modal-body .add-task:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 0 10px #5b8fff,
-    0 0 30px rgba(91, 143, 255, 0.3);
 }
 
 .modal-header h2 {
@@ -386,10 +351,56 @@ main {
   border: 1px solid var(--danger);
 }
 
-.modal.hide {
+.modal-body {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--padding-xl);
 }
 
+.modal-body input {
+  border: 1px solid var(--border);
+  outline: none;
+  background-color: var(--surface);
+  width: 100%;
+  padding: var(--padding-s);
+  border-radius: 8px;
+  color: white;
+}
+
+.modal-body textarea {
+  border: 1px solid var(--border);
+  outline: none;
+  background-color: var(--surface);
+  padding: var(--padding-l);
+  width: 100%;
+  border-radius: var(--padding-s);
+  color: white;
+  max-width: 376px;
+}
+
+.modal-body .add-task {
+  padding: var(--padding-m);
+  border: none;
+  outline: none;
+  background-color: var(--accent-todo);
+  color: white;
+  font-size: 15px;
+  border-radius: var(--padding-s);
+  font-weight: 500;
+  width: 100%;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.modal-body .add-task:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 10px #5b8fff,
+    0 0 30px rgba(91, 143, 255, 0.3);
+}
+
+/* ── DRAG HOVER ── */
 .column.hover-over {
   border: 2px dashed var(--accent-todo);
 }
