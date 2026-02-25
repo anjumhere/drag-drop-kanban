@@ -42,6 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
       );
   }
 
+  // column map — makes it easy to look up a column by name
+  const columns = {
+    todo: todoColumn,
+    progress: progressColumn,
+    done: doneColumn,
+  };
+
   // --- modal open / close ---
   // the modal starts hidden (display: none in CSS)
   // adding the "open" class switches it to display: flex
@@ -117,6 +124,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let taskIdCounter = 0;
 
+  // figures out which column a task currently lives in
+  function getCurrentColumn(task) {
+    if (todoColumn.contains(task)) return "todo";
+    if (progressColumn.contains(task)) return "progress";
+    if (doneColumn.contains(task)) return "done";
+    return null;
+  }
+
+  // moves a task to a different column and updates everything
+  function moveTaskToColumn(task, targetColumnId) {
+    const targetColumn = columns[targetColumnId];
+    if (!targetColumn) return;
+    targetColumn.querySelector(".column-body").appendChild(task);
+    updateTaskCounters();
+    updateMoveButton(task); // refresh the button label after moving
+    // on mobile, switch the view to the column we just moved to
+    if (window.innerWidth <= 600) {
+      showColumn(targetColumnId);
+      tabButtons.forEach((b) => {
+        b.classList.toggle("active", b.dataset.target === targetColumnId);
+      });
+    }
+  }
+
+  // updates the "Move to" button text based on where the task currently is
+  function updateMoveButton(task) {
+    const moveBtn = task.querySelector(".move-button");
+    const moveMenu = task.querySelector(".move-menu");
+    if (!moveBtn || !moveMenu) return;
+
+    const current = getCurrentColumn(task);
+
+    // build the options — show only the other two columns
+    moveMenu.innerHTML = "";
+    const options = [
+      { id: "todo", label: "To Do" },
+      { id: "progress", label: "In Progress" },
+      { id: "done", label: "Done" },
+    ];
+
+    options.forEach(({ id, label }) => {
+      if (id === current) return; // skip current column
+      const option = document.createElement("button");
+      option.classList.add("move-option");
+      option.textContent = label;
+      option.addEventListener("click", (e) => {
+        e.stopPropagation();
+        moveTaskToColumn(task, id);
+        moveMenu.classList.remove("open");
+      });
+      moveMenu.appendChild(option);
+    });
+  }
+
   // builds the task card element from scratch and returns it
   // I kept this separate from addNewTask so I can reuse it if needed later (e.g. loading from localStorage)
   function createTaskElement(title, description, id) {
@@ -149,14 +210,51 @@ document.addEventListener("DOMContentLoaded", () => {
       updateTaskCounters();
     });
 
+    // --- move button (only visible on mobile via CSS) ---
+    // a small dropdown that lets users move the task to another column
+    const moveWrapper = document.createElement("div");
+    moveWrapper.classList.add("move-wrapper");
+
+    const moveBtn = document.createElement("button");
+    moveBtn.classList.add("move-button", "btn");
+    moveBtn.textContent = "Move to ↓";
+
+    const moveMenu = document.createElement("div");
+    moveMenu.classList.add("move-menu");
+
+    // toggle the dropdown open/closed
+    moveBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = moveMenu.classList.contains("open");
+      // close all other open menus first
+      document
+        .querySelectorAll(".move-menu.open")
+        .forEach((m) => m.classList.remove("open"));
+      if (!isOpen) {
+        updateMoveButton(task); // refresh options before opening
+        moveMenu.classList.add("open");
+      }
+    });
+
+    moveWrapper.appendChild(moveBtn);
+    moveWrapper.appendChild(moveMenu);
+
+    taskActions.appendChild(editBtn);
+    taskActions.appendChild(moveWrapper);
+    taskActions.appendChild(deleteBtn);
     task.appendChild(taskHeading);
     task.appendChild(paragraph);
-    taskActions.appendChild(editBtn);
-    taskActions.appendChild(deleteBtn);
     task.appendChild(taskActions);
 
     return task;
   }
+
+  // close move menus when clicking anywhere else on the page
+  document.addEventListener("click", () => {
+    document
+      .querySelectorAll(".move-menu.open")
+      .forEach((m) => m.classList.remove("open"));
+  });
 
   function addNewTask() {
     const data = getModalData();
