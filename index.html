@@ -2,24 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- ✅ viewport meta is CRITICAL for mobile responsiveness -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>kanban</title>
+    <title>Kanban Board</title>
     <link rel="stylesheet" href="style.css" />
+    <!-- Font Awesome icons for the search icon and UI elements -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
   </head>
   <body>
+    <!-- ══════════════════════════════════════════
+         HEADER: logo, search bar, new task button
+    ══════════════════════════════════════════ -->
     <header>
-      <div class="border">
+      <div class="brand">
         <span class="bracket">[</span>
         <h1>KANBAN</h1>
         <span class="bracket">]</span>
       </div>
+
       <div class="search-wrapper">
         <span class="search-icon">⌕</span>
         <input
@@ -27,54 +32,101 @@
           placeholder="Search Tasks..."
           id="search"
           class="search"
+          autocomplete="off"
         />
       </div>
+
       <nav>
+        <!-- Clicking this button opens the "New Task" modal -->
         <button class="toggle-modal" id="toggle-modal">+ New Task</button>
       </nav>
     </header>
+
+    <!-- ══════════════════════════════════════════
+         MAIN CONTENT: the three Kanban columns
+    ══════════════════════════════════════════ -->
     <main>
       <section class="board">
+        <!-- Column 1: TO DO -->
         <section class="column" id="todo">
           <div class="info">
             <h2><span class="dot dot1"></span>TO DO</h2>
             <p class="count">0</p>
           </div>
-          <div class="column-body" id="column-body"></div>
+          <!-- Tasks get added here dynamically via JavaScript -->
+          <div class="column-body"></div>
         </section>
+
+        <!-- Column 2: IN PROGRESS -->
         <section class="column" id="progress">
           <div class="info">
             <h2><span class="dot dot2"></span>IN PROGRESS</h2>
             <p class="count">0</p>
           </div>
-          <div class="column-body" id="column-body"></div>
+          <div class="column-body"></div>
         </section>
+
+        <!-- Column 3: DONE -->
         <section class="column" id="done">
           <div class="info">
             <h2><span class="dot dot3"></span>DONE</h2>
             <p class="count">0</p>
           </div>
-          <div class="column-body" id="column-body"></div>
+          <div class="column-body"></div>
         </section>
       </section>
-      <section class="modal">
+
+      <!-- ══════════════════════════════════════════
+           MODAL: pops up to create OR edit a task
+           Hidden by default (no "hide" class = hidden)
+           Adding "open" class = visible
+      ══════════════════════════════════════════ -->
+      <section class="modal" id="modal">
+        <!-- Semi-transparent blurred background overlay -->
         <div class="bg"></div>
+
         <div class="center">
           <div class="modal-header">
-            <h2>New Task</h2>
-            <h2 class="close-modal" id="close-modal">X</h2>
+            <!-- Title changes to "Edit Task" when editing -->
+            <h2 id="modal-title">New Task</h2>
+            <button
+              class="close-modal"
+              id="close-modal"
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
           </div>
+
           <div class="modal-body">
-            <input type="text" placeholder="Task title..." id="modal-input" />
+            <input
+              type="text"
+              placeholder="Task title..."
+              id="modal-input"
+              autocomplete="off"
+            />
             <textarea
               id="modal-details"
-              placeholder="Task Description"
+              placeholder="Task description..."
+              rows="4"
             ></textarea>
+            <!-- This button says "Add Task" normally, "Save Changes" when editing -->
             <button class="add-task btn" id="add-task">Add Task</button>
           </div>
         </div>
       </section>
     </main>
+
+    <!-- ══════════════════════════════════════════
+         MOBILE COLUMN SWITCHER (only shows on small screens)
+         Lets users switch between columns on mobile
+    ══════════════════════════════════════════ -->
+    <div class="mobile-tabs" id="mobile-tabs">
+      <button class="tab-btn active" data-target="todo">To Do</button>
+      <button class="tab-btn" data-target="progress">In Progress</button>
+      <button class="tab-btn" data-target="done">Done</button>
+    </div>
+
     <script src="index.js"></script>
   </body>
 </html>
